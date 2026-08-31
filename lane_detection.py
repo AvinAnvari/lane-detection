@@ -12,8 +12,12 @@ while True:
 
     if not ret:
         break
-    cv2.imshow("Dashcam Feed",frame)
+    grayscale = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    blur = cv2.GaussianBlur(grayscale, (7,7), 0)
+    edge = cv2.Canny(blur, 80, 160)
+    cv2.imshow("Dashcam Feed",edge)
     key = cv2.waitKey(25)
+
     if key == ord('q'):
         break
 

@@ -16,7 +16,7 @@ while True:
     
     grayscale = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     blur = cv2.GaussianBlur(grayscale, (7,7), 0)
-    edge = cv2.Canny(blur, 30, 100)
+    edge = cv2.Canny(blur, 60, 160)
     points = np.array([[
     (150, 300),
     (785, 300),
@@ -41,20 +41,37 @@ while True:
             else:
                     continue
             intercept = y1 - slope * x1
-            if slope < 0:
-                    left_lines_slopes.append(slope)
-                    left_lines_intercepts.append(intercept)
-            else:
+            accepted = False
+            if slope < -0.3: #Filtering out left and right and horizontal noise
+                left_lines_slopes.append(slope)
+                left_lines_intercepts.append(intercept)
+                accepted = True
+                
+            elif slope > 0.3:
                 right_lines_slopes.append(slope)
                 right_lines_intercepts.append(intercept)
-            cv2.line(frame, (x1,y1), (x2,y2), (0,255,0), 10)
+                accepted = True
+
+            # if accepted:
+            #     cv2.line(frame, (x1,y1), (x2,y2), (0,255,0), 10)
 
         if len(left_lines_slopes) > 0:
             left_avg_slope = sum(left_lines_slopes)/len(left_lines_slopes)
             left_avg_intercept = sum(left_lines_intercepts)/len(left_lines_intercepts)
+            left_y1 = 350
+            left_y2 = 170
+            left_x1 = int((left_y1 - left_avg_intercept) / left_avg_slope)
+            left_x2 = int((left_y2 - left_avg_intercept) / left_avg_slope)
+            cv2.line(frame, (left_x1, left_y1), (left_x2, left_y2), (255, 0, 0), 10)
+
         if len(right_lines_slopes) > 0:
             right_avg_slope = sum(right_lines_slopes)/len(right_lines_slopes)
             right_avg_intercept = sum(right_lines_intercepts)/len(right_lines_intercepts)
+            right_y1 = 350
+            right_y2 = 170
+            right_x1 = int((right_y1 - right_avg_intercept) / right_avg_slope)
+            right_x2 = int((right_y2 - right_avg_intercept) / right_avg_slope)
+            cv2.line(frame, (right_x1, right_y1), (right_x2, right_y2), (0, 0, 255), 10)
         print(right_avg_slope, right_avg_intercept, left_avg_slope, left_avg_intercept)
     else:
         print("num lines found: 0")

@@ -25,7 +25,6 @@ while True:
     mask = np.zeros(edge.shape, dtype=np.uint8)
     filled = cv2.fillPoly(mask, points,255)
     bitwised = cv2.bitwise_and(filled, edge)
-    # test_lines = cv2.polylines(frame,points, True, (0,0,255), 5)
     lines = cv2.HoughLinesP(bitwised, 1, np.pi/180, 2, 2, 7)
 
     left_lines_slopes = []
@@ -51,9 +50,6 @@ while True:
                 right_lines_slopes.append(slope)
                 right_lines_intercepts.append(intercept)
                 accepted = True
-
-            # if accepted:
-            #     cv2.line(frame, (x1,y1), (x2,y2), (0,255,0), 10)
 
         if len(left_lines_slopes) > 0:
             left_avg_slope = sum(left_lines_slopes)/len(left_lines_slopes)

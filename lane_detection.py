@@ -32,7 +32,6 @@ while True:
     left_lines_intercepts = []
     right_lines_intercepts = []
     if lines is not None:
-        print("num lines found:", len(lines))
         for line in lines:
             x1, y1, x2, y2 = line
             if x2 != x1:
@@ -68,9 +67,6 @@ while True:
             right_x1 = int((right_y1 - right_avg_intercept) / right_avg_slope)
             right_x2 = int((right_y2 - right_avg_intercept) / right_avg_slope)
             cv2.line(frame, (right_x1, right_y1), (right_x2, right_y2), (0, 0, 255), 10)
-        print(right_avg_slope, right_avg_intercept, left_avg_slope, left_avg_intercept)
-    else:
-        print("num lines found: 0")
 
     cv2.imshow("Dashcam Feed",frame)
     key = cv2.waitKey(25)

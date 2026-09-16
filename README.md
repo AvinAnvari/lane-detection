@@ -1,5 +1,6 @@
 # Lane Detection
 
+![Lane detection demo](demo.gif)
 A computer vision pipeline that detects lane lines in dashcam footage using classical image processing techniques — built from scratch with OpenCV and NumPy, without any pre-trained models or deep learning.
 
 ## What it does
